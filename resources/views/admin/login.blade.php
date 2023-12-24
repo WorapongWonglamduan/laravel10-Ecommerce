@@ -10,27 +10,37 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
+
 <body>
+    @include('admin.message')
     <div class="d-flex justify-content-center">
         <h1 class="text-center">LOGIN</h1>
     </div>
-    <form action="" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('admin.authenticate') }}" method="post"{{--  enctype="multipart/form-data" --}}>
         @csrf
         <div class="row  p-5">
-
             <div class="col-md-12 mb-3">
                 <div class="form-group">
                     <strong>Email</strong>
-                    <input type="email" name="email" class="form-control" placeholder="Email">
+                    <input type="email" name="email" id='email'
+                        class="form-control @error('email') is-invalid @enderror" placeholder="Email"
+                        value={{ old('email') }}>
 
                 </div>
+                @error('email')
+                    <p class="invalid-feedback">{{ $message }}</p>
+                @enderror
             </div>
             <div class="col-md-12 mb-3">
                 <div class="form-group">
                     <strong>Password</strong>
-                    <input type="text" name="address" class="form-control" placeholder="Password">
+                    <input type="password" name="password" id='password'
+                        class="form-control @error('password') is-invalid @enderror" placeholder="Password">
 
                 </div>
+                @error('password')
+                    <p class="invalid-feedback">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="col-md-12 mb-3"> <button type="submit" class="btn btn-primary">Login</button></div>
