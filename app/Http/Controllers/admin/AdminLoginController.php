@@ -29,7 +29,8 @@ class AdminLoginController  extends Controller
                 if ($admin->role == 2) {
                     return redirect()->route('admin.dashboard');
                 } else {
-                    return redirect()->route('admin.login')->with('error', 'Your not Admin');
+                    Auth::guard('admin')->logout();
+                    return redirect()->route('admin.login')->with('error', 'Your are not authorized to access admin');
                 }
             } else {
                 return redirect()->route('admin.login')->with('error', 'Either Email/Password is incorrect');
@@ -39,5 +40,11 @@ class AdminLoginController  extends Controller
                 ->withErrors($validator)
                 ->withInput($request->only('email'));
         }
+    }
+
+    public function logout()
+    {
+        Auth::guard('admin')->logout();
+        return redirect()->route('admin.login');
     }
 }
