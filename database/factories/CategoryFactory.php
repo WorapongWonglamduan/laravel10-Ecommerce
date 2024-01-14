@@ -16,8 +16,12 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
+
+        // $name = $this->faker->name();
         return [
-            //
+            'name' => fake()->name(),
+            'status' => rand(0, 1),
+            'slug' => fake()->unique()->name()
         ];
     }
 }

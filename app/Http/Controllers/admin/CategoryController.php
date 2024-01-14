@@ -6,12 +6,21 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Category;
-
+use Illuminate\Support\Facades\Session;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+
+        $categories = Category::latest();
+
+        if (!empty($request->get('keyword'))) {
+            $categories = $categories->where('name', 'like', '%' . $request->get('keyword') . '%');
+        }
+        $categories = $categories->paginate(10);
+
+        return view('admin.category.list', compact('categories'));
     }
 
     public function create()
@@ -30,7 +39,7 @@ class CategoryController extends Controller
             $category->status = $request->status;
             $category->save();
 
-            // $request->session()->flash('success', 'Category added successfully');
+            Session::flash('success', 'Category added successfully');
 
             return response()->json([
                 'status' => true,
